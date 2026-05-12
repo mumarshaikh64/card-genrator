@@ -64,7 +64,7 @@ function NavbarInner() {
             className="flex items-center gap-2 bg-blue-50 text-blue-700 hover:bg-blue-100 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-colors border border-blue-200 whitespace-nowrap"
           >
             <Users className="w-4 h-4" />
-            <span className="hidden xs:inline">Employees</span>
+            <span className="hidden xs:inline">All Employees</span>
             <span className="inline xs:hidden">All</span>
           </Link>
         </div>
