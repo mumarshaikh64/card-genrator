@@ -35,6 +35,14 @@ function GeneratorForm() {
   const [qrData, setQrData] = useState("");
   const [attemptedSubmit, setAttemptedSubmit] = useState(false);
 
+  // Check for authentication
+  useEffect(() => {
+    const isAdmin = localStorage.getItem('isAdmin');
+    if (isAdmin !== 'true') {
+      router.push('/login');
+    }
+  }, [router]);
+
   // Load company details and set current date on mount
   useEffect(() => {
     // Set date only on client to avoid hydration mismatch

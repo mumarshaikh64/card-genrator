@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
-import { Search, Users } from 'lucide-react';
+import { Search, Users, LogOut } from 'lucide-react';
 import { useState, useEffect, Suspense } from 'react';
 
 function NavbarInner() {
@@ -25,6 +25,11 @@ function NavbarInner() {
     } else {
       router.push(`/employees`);
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('isAdmin');
+    router.push('/login');
   };
 
   return (
@@ -56,17 +61,25 @@ function NavbarInner() {
         </div>
       )}
 
-      {/* Right: View All Employees Button - Hidden on profile page */}
+      {/* Right: View All Employees Button & Logout - Hidden on profile page */}
       {!isProfilePage && (
-        <div className="order-2 sm:order-3">
+        <div className="order-2 sm:order-3 flex items-center gap-2">
           <Link 
             href="/employees"
             className="flex items-center gap-2 bg-blue-50 text-blue-700 hover:bg-blue-100 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-colors border border-blue-200 whitespace-nowrap"
           >
             <Users className="w-4 h-4" />
-            <span className="hidden xs:inline">All Employees</span>
+            <span className="hidden xs:inline">Employees</span>
             <span className="inline xs:hidden">All</span>
           </Link>
+          <button 
+            onClick={handleLogout}
+            className="flex items-center gap-2 bg-slate-50 text-slate-600 hover:bg-red-50 hover:text-red-600 px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all border border-slate-200 hover:border-red-100"
+            title="Logout"
+          >
+            <LogOut className="w-4 h-4" />
+            <span className="hidden md:inline">Logout</span>
+          </button>
         </div>
       )}
     </nav>

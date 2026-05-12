@@ -20,8 +20,12 @@ function EmployeesList() {
   const itemsPerPage = 8;
 
   useEffect(() => {
+    const isAdmin = localStorage.getItem('isAdmin');
+    if (isAdmin !== 'true') {
+      router.push('/login');
+    }
     fetchEmployees();
-  }, [query]);
+  }, [query, router]);
 
   const fetchEmployees = async () => {
     setLoading(true);
