@@ -12,13 +12,13 @@ function GeneratorForm() {
   const editId = searchParams.get('edit');
 
   const [formData, setFormData] = useState({
-    name: "Ishfaq Nazir",
-    jobTitle: "CFO",
-    empCode: "EMP-001",
-    department: "Finance",
+    name: "",
+    jobTitle: "",
+    empCode: "",
+    department: "",
     issueDate: "", // Initially empty to avoid hydration mismatch
-    phone: "+91 0000 000000",
-    address: "Srinagar, Kashmir",
+    phone: "",
+    address: "",
     companyAddress: "Kupwara, Kashmir - 193221.",
     companyPhone: "+91 1955 295310",
     companyEmail: "helpdesk@ar-techmarketing.in",
