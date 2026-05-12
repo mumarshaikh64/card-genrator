@@ -14,6 +14,9 @@ function NavbarInner() {
   // Check if we are on a profile page (QR scan target)
   const isProfilePage = pathname.startsWith('/employee/');
 
+  // Hide Navbar on Login page
+  if (pathname === '/login') return null;
+
   useEffect(() => {
     setSearch(searchParams.get('q') || '');
   }, [searchParams]);
