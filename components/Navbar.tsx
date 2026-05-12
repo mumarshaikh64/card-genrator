@@ -14,8 +14,6 @@ function NavbarInner() {
   // Check if we are on a profile page (QR scan target)
   const isProfilePage = pathname.startsWith('/employee/');
 
-  // Hide Navbar on Login page
-  if (pathname === '/login') return null;
 
   useEffect(() => {
     setSearch(searchParams.get('q') || '');
@@ -34,6 +32,8 @@ function NavbarInner() {
     localStorage.removeItem('isAdmin');
     router.push('/login');
   };
+
+  if (pathname === '/login') return null;
 
   return (
     <nav className={`bg-white border-b border-slate-200 px-4 sm:px-6 py-3 flex flex-wrap items-center ${isProfilePage ? 'justify-center' : 'justify-between'} sticky top-0 z-50 shadow-sm print:hidden gap-3`}>
