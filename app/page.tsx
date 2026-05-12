@@ -11,16 +11,12 @@ function GeneratorForm() {
   const searchParams = useSearchParams();
   const editId = searchParams.get('edit');
 
-  // Format current date for default value
-  const today = new Date();
-  const formattedDate = today.toISOString().split('T')[0];
-
   const [formData, setFormData] = useState({
     name: "Ishfaq Nazir",
     jobTitle: "CFO",
     empCode: "EMP-001",
     department: "Finance",
-    issueDate: formattedDate,
+    issueDate: "", // Initially empty to avoid hydration mismatch
     phone: "+91 0000 000000",
     address: "Srinagar, Kashmir",
     companyAddress: "Kupwara, Kashmir - 193221.",
@@ -31,14 +27,24 @@ function GeneratorForm() {
     signature: ""
   });
 
+  const [currentDate, setCurrentDate] = useState("");
+
   const sigInputRef = useRef<HTMLInputElement>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [showCompanyDetails, setShowCompanyDetails] = useState(false);
   const [qrData, setQrData] = useState("");
   const [attemptedSubmit, setAttemptedSubmit] = useState(false);
 
-  // Load company details from localStorage on mount
+  // Load company details and set current date on mount
   useEffect(() => {
+    // Set date only on client to avoid hydration mismatch
+    const today = new Date();
+    const formattedDate = today.toISOString().split('T')[0];
+    setCurrentDate(formattedDate);
+    if (!editId) {
+      setFormData(prev => ({ ...prev, issueDate: formattedDate }));
+    }
+
     const savedData = localStorage.getItem("companyProfile");
     if (savedData) {
       const parsed = JSON.parse(savedData);
@@ -51,7 +57,7 @@ function GeneratorForm() {
         signature: parsed.signature || prev.signature
       }));
     }
-  }, []);
+  }, [editId]);
 
   // Check for edit mode
   useEffect(() => {
@@ -328,7 +334,7 @@ function GeneratorForm() {
                       const networkIp = await getNetworkBaseUrl();
                       const port = window.location.port ? `:${window.location.port}` : '';
                       const protocol = window.location.protocol;
-                      const profileUrl = `${protocol}//${networkIp}${port}/employee/${editId || result.id}`;
+                      const profileUrl = `${protocol}//${networkIp}${port}/employee/${editId || (result as any).id}`;
                       
                       setQrData(profileUrl);
                       setAttemptedSubmit(false); // Reset validation state
@@ -345,7 +351,7 @@ function GeneratorForm() {
                           phone: "",
                           address: "",
                           image: "",
-                          issueDate: formattedDate
+                          issueDate: currentDate
                         }));
                       } else {
                         router.push('/employees');
