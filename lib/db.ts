@@ -1,9 +1,13 @@
-import { sql } from '@vercel/postgres';
+import { createClient } from '@vercel/postgres';
 
 export async function initDb() {
+  const client = createClient({
+    connectionString: process.env.PRISMA_DATABASE_URL || process.env.POSTGRES_URL || process.env.DATABASE_URL,
+  });
+  await client.connect();
   try {
     // Initialize table if it doesn't exist
-    await sql`
+    await client.sql`
       CREATE TABLE IF NOT EXISTS employees (
         id SERIAL PRIMARY KEY,
         name TEXT,
@@ -26,12 +30,18 @@ export async function initDb() {
   } catch (error) {
     console.error("Database initialization error:", error);
     throw error;
+  } finally {
+    await client.end();
   }
 }
 
 // Helper to ensure db is ready
 export async function getDb() {
-  // In Postgres, we don't need to return a connection object like in SQLite
-  // the 'sql' import from @vercel/postgres handles pooling and connections.
-  return sql;
+  // Using createClient() to support direct connection strings without pooling restrictions.
+  // Note: Callers should call await client.end() after finishing their queries.
+  const client = createClient({
+    connectionString: process.env.PRISMA_DATABASE_URL || process.env.POSTGRES_URL || process.env.DATABASE_URL,
+  });
+  await client.connect();
+  return client;
 }
