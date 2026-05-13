@@ -9,7 +9,7 @@ export interface Employee {
   jobTitle: string;
   empCode: string;
   department: string;
-  phone: string;
+  phone?: string;
   issueDate: string;
   address: string;
   image: string;
@@ -101,6 +101,26 @@ export async function saveEmployeeData(formData: any) {
   }
 }
 
+function mapEmployeeRow(row: any): Employee {
+  return {
+    id: row.id,
+    name: row.name || "",
+    jobTitle: row.jobtitle || row.jobTitle || "",
+    empCode: row.empcode || row.empCode || "",
+    department: row.department || "",
+    phone: row.phone || "",
+    issueDate: row.issuedate || row.issueDate || "",
+    address: row.address || "",
+    image: row.image || "",
+    companyAddress: row.companyaddress || row.companyAddress || "",
+    companyPhone: row.companyphone || row.companyPhone || "",
+    companyEmail: row.companyemail || row.companyEmail || "",
+    companyWeb: row.companyweb || row.companyWeb || "",
+    signature: row.signature || "",
+    createdAt: row.createdat || row.createdAt || "",
+  };
+}
+
 export async function getAllEmployees(searchQuery?: string) {
   try {
     return await executeQuery(async (client) => {
@@ -118,7 +138,8 @@ export async function getAllEmployees(searchQuery?: string) {
         employees = await client.query(`SELECT * FROM employees ORDER BY createdAt DESC`);
       }
 
-      return { success: true, data: employees.rows as Employee[], error: undefined };
+      const mappedData = employees.rows.map(mapEmployeeRow);
+      return { success: true, data: mappedData, error: undefined };
     });
   } catch (error: any) {
     console.error("Fetch Error:", error);
@@ -136,7 +157,7 @@ export async function getEmployeeById(id: string | number) {
         return { success: false, data: undefined, error: "Employee not found." };
       }
       
-      return { success: true, data: employee.rows[0] as Employee, error: undefined };
+      return { success: true, data: mapEmployeeRow(employee.rows[0]), error: undefined };
     });
   } catch (error: any) {
     console.error("Fetch Error:", error);
