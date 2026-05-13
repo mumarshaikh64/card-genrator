@@ -89,11 +89,15 @@ function GeneratorForm() {
         ...prev,
         ...result.data
       }));
-      // Set QR data initially if editing
-      const networkIp = await getNetworkBaseUrl();
-      const port = window.location.port ? `:${window.location.port}` : '';
-      const protocol = window.location.protocol;
-      setQrData(`${protocol}//${networkIp}${port}/employee/${id}`);
+      // Set QR data initially using live origin in production or network IP locally
+      const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      if (isLocal) {
+        const networkIp = await getNetworkBaseUrl();
+        const port = window.location.port ? `:${window.location.port}` : '';
+        setQrData(`${window.location.protocol}//${networkIp}${port}/employee/${id}`);
+      } else {
+        setQrData(`${window.location.origin}/employee/${id}`);
+      }
     }
   };
 
@@ -348,10 +352,15 @@ function GeneratorForm() {
                       }
 
                       if (result.success) {
-                        const networkIp = await getNetworkBaseUrl();
-                        const port = window.location.port ? `:${window.location.port}` : '';
-                        const protocol = window.location.protocol;
-                        const profileUrl = `${protocol}//${networkIp}${port}/employee/${editId || (result as any).id}`;
+                        const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+                        let profileUrl;
+                        if (isLocal) {
+                          const networkIp = await getNetworkBaseUrl();
+                          const port = window.location.port ? `:${window.location.port}` : '';
+                          profileUrl = `${window.location.protocol}//${networkIp}${port}/employee/${editId || (result as any).id}`;
+                        } else {
+                          profileUrl = `${window.location.origin}/employee/${editId || (result as any).id}`;
+                        }
 
                         setQrData(profileUrl);
                         setAttemptedSubmit(false); // Reset validation state
