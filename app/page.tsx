@@ -321,76 +321,93 @@ function GeneratorForm() {
 
             {/* Action Button */}
             <div className="space-y-2">
-              <button
-                type="button"
-                disabled={isSaving}
-                className={`w-full mt-4 text-white py-4 px-4 rounded-xl font-bold transition-all shadow-lg flex justify-center items-center gap-2 transform active:scale-[0.98] ${isSaving ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 shadow-blue-200'}`}
-                onClick={async () => {
-                  setAttemptedSubmit(true);
+              <div className="flex gap-3 mt-4">
+                <button
+                  type="button"
+                  disabled={isSaving}
+                  className={`flex-1 text-white py-4 px-4 rounded-xl font-bold transition-all shadow-lg flex justify-center items-center gap-2 transform active:scale-[0.98] ${isSaving ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 shadow-blue-200'}`}
+                  onClick={async () => {
+                    setAttemptedSubmit(true);
 
-                  // Validation logic
-                  const requiredFields = ['name', 'jobTitle', 'empCode', 'department', 'issueDate', 'address'];
-                  const isAnyFieldMissing = requiredFields.some(key => !formData[key as keyof typeof formData]);
+                    // Validation logic
+                    const requiredFields = ['name', 'jobTitle', 'empCode', 'department', 'issueDate', 'address'];
+                    const isAnyFieldMissing = requiredFields.some(key => !formData[key as keyof typeof formData]);
 
-                  if (isAnyFieldMissing || !formData.image) {
-                    // Visual validation will trigger via attemptedSubmit state
-                    return;
-                  }
-
-                  setIsSaving(true);
-                  try {
-                    let result;
-                    if (editId) {
-                      result = await updateEmployee(Number(editId), formData);
-                    } else {
-                      result = await saveEmployeeData(formData);
+                    if (isAnyFieldMissing || !formData.image) {
+                      // Visual validation will trigger via attemptedSubmit state
+                      return;
                     }
 
-                    if (result.success) {
-                      const networkIp = await getNetworkBaseUrl();
-                      const port = window.location.port ? `:${window.location.port}` : '';
-                      const protocol = window.location.protocol;
-                      const profileUrl = `${protocol}//${networkIp}${port}/employee/${editId || (result as any).id}`;
-
-                      setQrData(profileUrl);
-                      setAttemptedSubmit(false); // Reset validation state
-
-                      alert(editId ? "Profile updated successfully!" : "Profile created successfully!");
-
-                      if (!editId) {
-                        setFormData(prev => ({
-                          ...prev,
-                          name: "",
-                          jobTitle: "",
-                          empCode: "",
-                          department: "",
-                          phone: "",
-                          address: "",
-                          image: "",
-                          issueDate: currentDate
-                        }));
+                    setIsSaving(true);
+                    try {
+                      let result;
+                      if (editId) {
+                        result = await updateEmployee(Number(editId), formData);
                       } else {
-                        router.push('/employees');
+                        result = await saveEmployeeData(formData);
                       }
-                    } else {
-                      alert("Failed to save data: " + result.error);
+
+                      if (result.success) {
+                        const networkIp = await getNetworkBaseUrl();
+                        const port = window.location.port ? `:${window.location.port}` : '';
+                        const protocol = window.location.protocol;
+                        const profileUrl = `${protocol}//${networkIp}${port}/employee/${editId || (result as any).id}`;
+
+                        setQrData(profileUrl);
+                        setAttemptedSubmit(false); // Reset validation state
+
+                        alert(editId ? "Profile updated successfully!" : "Profile created successfully!");
+
+                        if (editId) {
+                          router.push('/employees');
+                        }
+                      } else {
+                        alert("Failed to save data: " + result.error);
+                      }
+                    } catch (error) {
+                      alert("An unexpected error occurred while saving.");
+                    } finally {
+                      setIsSaving(false);
                     }
-                  } catch (error) {
-                    alert("An unexpected error occurred while saving.");
-                  } finally {
-                    setIsSaving(false);
-                  }
-                }}
-              >
-                {isSaving ? (
-                  <>
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                    {editId ? "Updating..." : "Creating..."}
-                  </>
-                ) : (
-                  editId ? "Update Profile" : "Create Profile"
+                  }}
+                >
+                  {isSaving ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      {editId ? "Updating..." : "Creating..."}
+                    </>
+                  ) : (
+                    editId ? "Update Profile" : "Create Profile"
+                  )}
+                </button>
+
+                {!editId && qrData && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFormData({
+                        name: "",
+                        jobTitle: "",
+                        empCode: "",
+                        department: "",
+                        issueDate: currentDate,
+                        phone: "",
+                        address: "",
+                        companyAddress: "Kupwara, Kashmir - 193221.",
+                        companyPhone: "+91 1955 295310",
+                        companyEmail: "helpdesk@ar-techmarketing.in",
+                        companyWeb: "http://ar-techmarketing.in",
+                        image: "",
+                        signature: ""
+                      });
+                      setQrData("");
+                    }}
+                    className="px-4 py-4 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold transition-all text-xs uppercase tracking-wider border border-slate-200 shrink-0"
+                  >
+                    Create Fresh Card
+                  </button>
                 )}
-              </button>
+              </div>
 
               {attemptedSubmit && (
                 <div className="flex items-center justify-center gap-1.5 text-red-500 animate-pulse mt-2">
