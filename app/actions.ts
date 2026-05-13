@@ -73,11 +73,11 @@ export async function saveEmployeeData(formData: any) {
         RETURNING id
       `, [name, jobTitle, empCode, department, phone, issueDate, address, image, companyAddress, companyPhone, companyEmail, companyWeb, signature]);
 
-      return { success: true, id: result.rows[0].id };
+      return { success: true, id: result.rows[0].id, error: undefined };
     });
   } catch (error: any) {
     console.error("Database Error:", error);
-    return { success: false, error: error.message || "Failed to save data to the database." };
+    return { success: false, id: undefined, error: error.message || "Failed to save data to the database." };
   }
 }
 
@@ -98,7 +98,7 @@ export async function getAllEmployees(searchQuery?: string) {
         employees = await client.query(`SELECT * FROM employees ORDER BY createdAt DESC`);
       }
 
-      return { success: true, data: employees.rows as Employee[] };
+      return { success: true, data: employees.rows as Employee[], error: undefined };
     });
   } catch (error: any) {
     console.error("Fetch Error:", error);
@@ -116,7 +116,7 @@ export async function getEmployeeById(id: string | number) {
         return { success: false, data: undefined, error: "Employee not found." };
       }
       
-      return { success: true, data: employee.rows[0] as Employee };
+      return { success: true, data: employee.rows[0] as Employee, error: undefined };
     });
   } catch (error: any) {
     console.error("Fetch Error:", error);
@@ -129,7 +129,7 @@ export async function deleteEmployee(id: number) {
     return await executeQuery(async (client) => {
       await ensureTableExists(client);
       await client.query(`DELETE FROM employees WHERE id = $1`, [id]);
-      return { success: true };
+      return { success: true, error: undefined };
     });
   } catch (error: any) {
     console.error("Delete Error:", error);
@@ -151,7 +151,7 @@ export async function updateEmployee(id: number, formData: any) {
         WHERE id = $14
       `, [name, jobTitle, empCode, department, phone, issueDate, address, image, companyAddress, companyPhone, companyEmail, companyWeb, signature, id]);
       
-      return { success: true };
+      return { success: true, error: undefined };
     });
   } catch (error: any) {
     console.error("Update Error:", error);
