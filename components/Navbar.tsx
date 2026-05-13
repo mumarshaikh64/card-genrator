@@ -41,8 +41,9 @@ function NavbarInner() {
       <Link href="/" className={`flex items-center gap-2 shrink-0 hover:no-underline ${isProfilePage ? 'py-1' : ''}`}>
         <img 
           src="/logo.jpg" 
-          alt="Company Logo" 
-          className={`${isProfilePage ? 'h-16 sm:h-20' : 'h-12 sm:h-14'} object-contain transition-all duration-300`} 
+          alt="Company Logo"
+           className={`${isProfilePage ? 'h-24 sm:h-32' : 'h-16 sm:h-20'} object-contain transition-all duration-300`}
+          // className={`${isProfilePage ? 'h-16 sm:h-20' : 'h-12 sm:h-14'} object-contain transition-all duration-300`} 
         />
       </Link>
 
