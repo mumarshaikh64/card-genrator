@@ -1,6 +1,6 @@
 'use server';
 
-import { getDbConnection } from '@/lib/db';
+import { sql } from '@vercel/postgres';
 import os from 'os';
 
 export interface Employee {
@@ -21,19 +21,45 @@ export interface Employee {
   createdAt: string;
 }
 
+// Function to initialize the table if it doesn't exist
+async function ensureTableExists() {
+  try {
+    await sql`
+      CREATE TABLE IF NOT EXISTS employees (
+        id SERIAL PRIMARY KEY,
+        name TEXT,
+        jobTitle TEXT,
+        empCode TEXT,
+        department TEXT,
+        phone TEXT,
+        issueDate TEXT,
+        address TEXT,
+        image TEXT,
+        companyAddress TEXT,
+        companyPhone TEXT,
+        companyEmail TEXT,
+        companyWeb TEXT,
+        signature TEXT,
+        createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `;
+  } catch (error) {
+    console.error("Error creating table:", error);
+  }
+}
+
 export async function saveEmployeeData(formData: any) {
   try {
-    const db = await getDbConnection();
-    
+    await ensureTableExists();
     const { name, jobTitle, empCode, department, phone, issueDate, address, image, companyAddress, companyPhone, companyEmail, companyWeb, signature } = formData;
 
-    const result = await db.run(
-      `INSERT INTO employees (name, jobTitle, empCode, department, phone, issueDate, address, image, companyAddress, companyPhone, companyEmail, companyWeb, signature)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [name, jobTitle, empCode, department, phone, issueDate, address, image, companyAddress, companyPhone, companyEmail, companyWeb, signature]
-    );
+    const result = await sql`
+      INSERT INTO employees (name, jobTitle, empCode, department, phone, issueDate, address, image, companyAddress, companyPhone, companyEmail, companyWeb, signature)
+      VALUES (${name}, ${jobTitle}, ${empCode}, ${department}, ${phone}, ${issueDate}, ${address}, ${image}, ${companyAddress}, ${companyPhone}, ${companyEmail}, ${companyWeb}, ${signature})
+      RETURNING id
+    `;
 
-    return { success: true, id: result.lastID };
+    return { success: true, id: result.rows[0].id };
   } catch (error: any) {
     console.error("Database Error:", error);
     return { success: false, error: error.message || "Failed to save data to the database." };
@@ -42,19 +68,21 @@ export async function saveEmployeeData(formData: any) {
 
 export async function getAllEmployees(searchQuery?: string) {
   try {
-    const db = await getDbConnection();
-    
-    let query = 'SELECT * FROM employees ORDER BY createdAt DESC';
-    let params: any[] = [];
+    await ensureTableExists();
+    let employees;
     
     if (searchQuery) {
-      query = 'SELECT * FROM employees WHERE name LIKE ? OR empCode LIKE ? OR department LIKE ? ORDER BY createdAt DESC';
       const likeQuery = `%${searchQuery}%`;
-      params = [likeQuery, likeQuery, likeQuery];
+      employees = await sql<Employee>`
+        SELECT * FROM employees 
+        WHERE name ILIKE ${likeQuery} OR empCode ILIKE ${likeQuery} OR department ILIKE ${likeQuery} 
+        ORDER BY createdAt DESC
+      `;
+    } else {
+      employees = await sql<Employee>`SELECT * FROM employees ORDER BY createdAt DESC`;
     }
 
-    const employees = await db.all<Employee[]>(query, params);
-    return { success: true, data: employees };
+    return { success: true, data: employees.rows };
   } catch (error: any) {
     console.error("Fetch Error:", error);
     return { success: false, data: [] as Employee[], error: error.message || "Failed to fetch employees." };
@@ -63,14 +91,14 @@ export async function getAllEmployees(searchQuery?: string) {
 
 export async function getEmployeeById(id: string | number) {
   try {
-    const db = await getDbConnection();
-    const employee = await db.get<Employee>('SELECT * FROM employees WHERE id = ?', [id]);
+    await ensureTableExists();
+    const employee = await sql<Employee>`SELECT * FROM employees WHERE id = ${id}`;
     
-    if (!employee) {
+    if (employee.rows.length === 0) {
       return { success: false, error: "Employee not found." };
     }
     
-    return { success: true, data: employee };
+    return { success: true, data: employee.rows[0] };
   } catch (error: any) {
     console.error("Fetch Error:", error);
     return { success: false, error: error.message || "Failed to fetch employee details." };
@@ -79,8 +107,8 @@ export async function getEmployeeById(id: string | number) {
 
 export async function deleteEmployee(id: number) {
   try {
-    const db = await getDbConnection();
-    await db.run('DELETE FROM employees WHERE id = ?', [id]);
+    await ensureTableExists();
+    await sql`DELETE FROM employees WHERE id = ${id}`;
     return { success: true };
   } catch (error: any) {
     console.error("Delete Error:", error);
@@ -90,17 +118,16 @@ export async function deleteEmployee(id: number) {
 
 export async function updateEmployee(id: number, formData: any) {
   try {
-    const db = await getDbConnection();
+    await ensureTableExists();
     const { name, jobTitle, empCode, department, phone, issueDate, address, image, companyAddress, companyPhone, companyEmail, companyWeb, signature } = formData;
     
-    await db.run(
-      `UPDATE employees SET 
-        name = ?, jobTitle = ?, empCode = ?, department = ?, phone = ?, 
-        issueDate = ?, address = ?, image = ?, companyAddress = ?, 
-        companyPhone = ?, companyEmail = ?, companyWeb = ?, signature = ?
-      WHERE id = ?`,
-      [name, jobTitle, empCode, department, phone, issueDate, address, image, companyAddress, companyPhone, companyEmail, companyWeb, signature, id]
-    );
+    await sql`
+      UPDATE employees SET 
+        name = ${name}, jobTitle = ${jobTitle}, empCode = ${empCode}, department = ${department}, phone = ${phone}, 
+        issueDate = ${issueDate}, address = ${address}, image = ${image}, companyAddress = ${companyAddress}, 
+        companyPhone = ${companyPhone}, companyEmail = ${companyEmail}, companyWeb = ${companyWeb}, signature = ${signature}
+      WHERE id = ${id}
+    `;
     
     return { success: true };
   } catch (error: any) {
