@@ -37,7 +37,7 @@ async function executeQuery<T>(callback: (client: Client) => Promise<T>): Promis
   }
 }
 
-// Function to initialize the table if it doesn't exist
+// Function to initialize the table if it doesn't exist and ensure all schema columns are present
 async function ensureTableExists(client: Client) {
   try {
     await client.query(`
@@ -59,8 +59,25 @@ async function ensureTableExists(client: Client) {
         createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
+
+    // Safely add missing columns to previously created tables without dropping existing data
+    const newColumns = [
+      "companyAddress TEXT",
+      "companyPhone TEXT",
+      "companyEmail TEXT",
+      "companyWeb TEXT",
+      "signature TEXT"
+    ];
+    for (const col of newColumns) {
+      try {
+        const colName = col.split(" ")[0];
+        await client.query(`ALTER TABLE employees ADD COLUMN IF NOT EXISTS ${colName} ${col.split(" ")[1]}`);
+      } catch (err) {
+        // Ignore if column already exists or syntax is unsupported
+      }
+    }
   } catch (error) {
-    console.error("Error creating table:", error);
+    console.error("Error creating table or updating schema:", error);
   }
 }
 

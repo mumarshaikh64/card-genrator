@@ -29,6 +29,23 @@ export async function initDb() {
         createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
+
+    // Safely add missing columns to previously created tables without dropping existing data
+    const newColumns = [
+      "companyAddress TEXT",
+      "companyPhone TEXT",
+      "companyEmail TEXT",
+      "companyWeb TEXT",
+      "signature TEXT"
+    ];
+    for (const col of newColumns) {
+      try {
+        const colName = col.split(" ")[0];
+        await client.query(`ALTER TABLE employees ADD COLUMN IF NOT EXISTS ${colName} ${col.split(" ")[1]}`);
+      } catch (err) {
+        // Ignore if column already exists or syntax is unsupported
+      }
+    }
     console.log("Database initialized successfully");
   } catch (error) {
     console.error("Database initialization error:", error);
