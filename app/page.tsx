@@ -27,6 +27,11 @@ function GeneratorForm() {
     signature: ""
   });
 
+
+
+
+
+
   const [currentDate, setCurrentDate] = useState("");
 
   const sigInputRef = useRef<HTMLInputElement>(null);
@@ -169,13 +174,13 @@ function GeneratorForm() {
                     <label className={`block text-[11px] font-bold uppercase tracking-wider ${isInvalid('name') ? 'text-red-500' : 'text-slate-500'}`}>Full Name</label>
                     <div className="relative group">
                       <User className={`absolute left-3 top-2.5 h-4 w-4 transition-colors ${isInvalid('name') ? 'text-red-400' : 'text-slate-400 group-focus-within:text-blue-500'}`} />
-                      <input 
-                        type="text" 
-                        name="name" 
-                        value={formData.name} 
-                        onChange={handleInputChange} 
-                        className={`pl-9 w-full rounded-xl border bg-white py-2 text-sm outline-none transition-all shadow-sm ${isInvalid('name') ? 'border-red-300 focus:border-red-500' : 'border-slate-200 focus:border-blue-500'}`} 
-                        placeholder="Ishfaq Nazir" 
+                      <input
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        className={`pl-9 w-full rounded-xl border bg-white py-2 text-sm outline-none transition-all shadow-sm ${isInvalid('name') ? 'border-red-300 focus:border-red-500' : 'border-slate-200 focus:border-blue-500'}`}
+                        placeholder="Ishfaq Nazir"
                       />
                     </div>
                   </div>
@@ -184,13 +189,13 @@ function GeneratorForm() {
                     <label className={`block text-[11px] font-bold uppercase tracking-wider ${isInvalid('jobTitle') ? 'text-red-500' : 'text-slate-500'}`}>Job Title</label>
                     <div className="relative group">
                       <Briefcase className={`absolute left-3 top-2.5 h-4 w-4 transition-colors ${isInvalid('jobTitle') ? 'text-red-400' : 'text-slate-400 group-focus-within:text-blue-500'}`} />
-                      <input 
-                        type="text" 
-                        name="jobTitle" 
-                        value={formData.jobTitle} 
-                        onChange={handleInputChange} 
-                        className={`pl-9 w-full rounded-xl border bg-white py-2 text-sm outline-none transition-all shadow-sm ${isInvalid('jobTitle') ? 'border-red-300 focus:border-red-500' : 'border-slate-200 focus:border-blue-500'}`} 
-                        placeholder="CFO" 
+                      <input
+                        type="text"
+                        name="jobTitle"
+                        value={formData.jobTitle}
+                        onChange={handleInputChange}
+                        className={`pl-9 w-full rounded-xl border bg-white py-2 text-sm outline-none transition-all shadow-sm ${isInvalid('jobTitle') ? 'border-red-300 focus:border-red-500' : 'border-slate-200 focus:border-blue-500'}`}
+                        placeholder="CFO"
                       />
                     </div>
                   </div>
@@ -199,13 +204,13 @@ function GeneratorForm() {
                     <label className={`block text-[11px] font-bold uppercase tracking-wider ${isInvalid('empCode') ? 'text-red-500' : 'text-slate-500'}`}>Emp Code</label>
                     <div className="relative group">
                       <Hash className={`absolute left-3 top-2.5 h-4 w-4 transition-colors ${isInvalid('empCode') ? 'text-red-400' : 'text-slate-400 group-focus-within:text-blue-500'}`} />
-                      <input 
-                        type="text" 
-                        name="empCode" 
-                        value={formData.empCode} 
-                        onChange={handleInputChange} 
-                        className={`pl-9 w-full rounded-xl border bg-white py-2 text-sm outline-none transition-all shadow-sm ${isInvalid('empCode') ? 'border-red-300 focus:border-red-500' : 'border-slate-200 focus:border-blue-500'}`} 
-                        placeholder="EMP-001" 
+                      <input
+                        type="text"
+                        name="empCode"
+                        value={formData.empCode}
+                        onChange={handleInputChange}
+                        className={`pl-9 w-full rounded-xl border bg-white py-2 text-sm outline-none transition-all shadow-sm ${isInvalid('empCode') ? 'border-red-300 focus:border-red-500' : 'border-slate-200 focus:border-blue-500'}`}
+                        placeholder="EMP-001"
                       />
                     </div>
                   </div>
@@ -214,13 +219,13 @@ function GeneratorForm() {
                     <label className={`block text-[11px] font-bold uppercase tracking-wider ${isInvalid('department') ? 'text-red-500' : 'text-slate-500'}`}>Department</label>
                     <div className="relative group">
                       <Building className={`absolute left-3 top-2.5 h-4 w-4 transition-colors ${isInvalid('department') ? 'text-red-400' : 'text-slate-400 group-focus-within:text-blue-500'}`} />
-                      <input 
-                        type="text" 
-                        name="department" 
-                        value={formData.department} 
-                        onChange={handleInputChange} 
-                        className={`pl-9 w-full rounded-xl border bg-white py-2 text-sm outline-none transition-all shadow-sm ${isInvalid('department') ? 'border-red-300 focus:border-red-500' : 'border-slate-200 focus:border-blue-500'}`} 
-                        placeholder="Finance" 
+                      <input
+                        type="text"
+                        name="department"
+                        value={formData.department}
+                        onChange={handleInputChange}
+                        className={`pl-9 w-full rounded-xl border bg-white py-2 text-sm outline-none transition-all shadow-sm ${isInvalid('department') ? 'border-red-300 focus:border-red-500' : 'border-slate-200 focus:border-blue-500'}`}
+                        placeholder="Finance"
                       />
                     </div>
                   </div>
@@ -229,12 +234,12 @@ function GeneratorForm() {
                     <label className={`block text-[11px] font-bold uppercase tracking-wider ${isInvalid('issueDate') ? 'text-red-500' : 'text-slate-500'}`}>Issue Date</label>
                     <div className="relative group">
                       <Calendar className={`absolute left-3 top-2.5 h-4 w-4 transition-colors ${isInvalid('issueDate') ? 'text-red-400' : 'text-slate-400 group-focus-within:text-blue-500'}`} />
-                      <input 
-                        type="date" 
-                        name="issueDate" 
-                        value={formData.issueDate} 
-                        onChange={handleInputChange} 
-                        className={`pl-9 w-full rounded-xl border bg-white py-2 text-sm outline-none transition-all shadow-sm ${isInvalid('issueDate') ? 'border-red-300 focus:border-red-500' : 'border-slate-200 focus:border-blue-500'}`} 
+                      <input
+                        type="date"
+                        name="issueDate"
+                        value={formData.issueDate}
+                        onChange={handleInputChange}
+                        className={`pl-9 w-full rounded-xl border bg-white py-2 text-sm outline-none transition-all shadow-sm ${isInvalid('issueDate') ? 'border-red-300 focus:border-red-500' : 'border-slate-200 focus:border-blue-500'}`}
                       />
                     </div>
                   </div>
@@ -244,13 +249,13 @@ function GeneratorForm() {
                   <label className={`block text-[11px] font-bold uppercase tracking-wider ${isInvalid('address') ? 'text-red-500' : 'text-slate-500'}`}>Home Address</label>
                   <div className="relative group">
                     <MapPin className={`absolute left-3 top-2.5 h-4 w-4 transition-colors ${isInvalid('address') ? 'text-red-400' : 'text-slate-400 group-focus-within:text-blue-500'}`} />
-                    <input 
-                      type="text" 
-                      name="address" 
-                      value={formData.address} 
-                      onChange={handleInputChange} 
-                      className={`pl-9 w-full rounded-xl border bg-white py-2 text-sm outline-none transition-all shadow-sm ${isInvalid('address') ? 'border-red-300 focus:border-red-500' : 'border-slate-200 focus:border-blue-500'}`} 
-                      placeholder="Enter full address" 
+                    <input
+                      type="text"
+                      name="address"
+                      value={formData.address}
+                      onChange={handleInputChange}
+                      className={`pl-9 w-full rounded-xl border bg-white py-2 text-sm outline-none transition-all shadow-sm ${isInvalid('address') ? 'border-red-300 focus:border-red-500' : 'border-slate-200 focus:border-blue-500'}`}
+                      placeholder="Enter full address"
                     />
                   </div>
                 </div>
@@ -259,7 +264,7 @@ function GeneratorForm() {
 
             {/* Company Details Accordion */}
             <div className="pt-4 border-t border-slate-100 mt-6">
-              <button 
+              <button
                 type="button"
                 onClick={() => setShowCompanyDetails(!showCompanyDetails)}
                 className="w-full flex items-center justify-between py-1 text-slate-500 hover:text-blue-600 transition-colors"
@@ -271,7 +276,7 @@ function GeneratorForm() {
                 </div>
                 {showCompanyDetails ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
               </button>
-              
+
               <div className={`overflow-hidden transition-all duration-300 ${showCompanyDetails ? 'max-h-[500px] mt-4 opacity-100' : 'max-h-0 opacity-0'}`}>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   <div className="space-y-1.5">
@@ -319,11 +324,11 @@ function GeneratorForm() {
                 className={`w-full mt-4 text-white py-4 px-4 rounded-xl font-bold transition-all shadow-lg flex justify-center items-center gap-2 transform active:scale-[0.98] ${isSaving ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 shadow-blue-200'}`}
                 onClick={async () => {
                   setAttemptedSubmit(true);
-                  
+
                   // Validation logic
                   const requiredFields = ['name', 'jobTitle', 'empCode', 'department', 'issueDate', 'address'];
                   const isAnyFieldMissing = requiredFields.some(key => !formData[key as keyof typeof formData]);
-                  
+
                   if (isAnyFieldMissing || !formData.image) {
                     // Visual validation will trigger via attemptedSubmit state
                     return;
@@ -343,12 +348,12 @@ function GeneratorForm() {
                       const port = window.location.port ? `:${window.location.port}` : '';
                       const protocol = window.location.protocol;
                       const profileUrl = `${protocol}//${networkIp}${port}/employee/${editId || (result as any).id}`;
-                      
+
                       setQrData(profileUrl);
                       setAttemptedSubmit(false); // Reset validation state
-                      
+
                       alert(editId ? "Profile updated successfully!" : "Profile created successfully!");
-                      
+
                       if (!editId) {
                         setFormData(prev => ({
                           ...prev,
@@ -383,7 +388,7 @@ function GeneratorForm() {
                   editId ? "Update Profile" : "Create Profile"
                 )}
               </button>
-              
+
               {attemptedSubmit && (
                 <div className="flex items-center justify-center gap-1.5 text-red-500 animate-pulse mt-2">
                   <AlertCircle className="w-4 h-4" />
@@ -406,7 +411,7 @@ function GeneratorForm() {
 
         {/* Action Buttons */}
         <div className="w-full max-w-2xl flex justify-end mb-8 z-10 print:hidden relative">
-          <button 
+          <button
             onClick={() => window.print()}
             className="flex items-center gap-2 bg-slate-800 text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-slate-700 transition-colors shadow-md"
           >
@@ -418,133 +423,133 @@ function GeneratorForm() {
         {/* Cards Container */}
         <div className="flex flex-col xl:flex-row gap-8 items-center justify-center z-10 relative print:flex-row print:gap-4 print:items-start">
 
-            {/* FRONT FACE */}
-            <div
-              className="relative w-[340px] h-[525px] bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col border border-slate-200 print:shadow-none print:border-gray-300 print:break-inside-avoid shrink-0"
-            >
-              {/* Background Image */}
-              <img src="/card.svg" alt="" className="absolute inset-0 w-full h-full object-cover z-0" />
-              {/* Logo Area */}
-              <div className="relative z-10 w-full flex justify-center">
-                <div className="bg-white rounded-b-[18px] shadow-sm flex items-center justify-center overflow-hidden h-[90px] w-[230px]">
-                  <img src="/logo.jpg" alt="Logo" className="w-full h-full object-contain scale-[1.2]" />
-                </div>
-              </div>
-
-              {/* Profile Image */}
-              <div className="relative z-10 flex justify-center mt-6">
-                <div className="w-32 h-32 rounded-full border-4 border-white shadow-md overflow-hidden bg-slate-100 flex items-center justify-center">
-                  {!formData.image ? (
-                    <User className="w-16 h-16 text-slate-300" />
-                  ) : (
-                    <img src={formData.image} alt="Profile" className="w-full h-full object-cover" />
-                  )}
-                </div>
-              </div>
-
-              {/* Details Area */}
-              <div className="relative z-10 flex-1 flex flex-col items-center pt-4 px-8 pb-10">
-                <h2 className="text-2xl font-bold text-[#4c9fd6] mb-0.5 text-center leading-tight">{formData.name || "Employee Name"}</h2>
-                <p className="text-sm text-slate-600 font-medium mb-6 uppercase tracking-wider">{formData.jobTitle || "Job Title"}</p>
-
-                <div className="w-full space-y-2.5 mt-2">
-                  <div className="flex items-start">
-                    <span className="w-24 text-[12px] font-bold text-black">Emp Code</span>
-                    <span className="text-[11px] font-bold text-black mr-2">:</span>
-                    <span className="text-[11px] text-black font-semibold flex-1">{formData.empCode || "-"}</span>
-                  </div>
-                  <div className="flex items-start">
-                    <span className="w-24 text-[12px] font-bold text-black">Department</span>
-                    <span className="text-[11px] font-bold text-black mr-2">:</span>
-                    <span className="text-[11px] text-black font-semibold flex-1">{formData.department || "-"}</span>
-                  </div>
-                  <div className="flex items-start">
-                    <span className="w-24 text-[12px] font-bold text-black">Issue Date</span>
-                    <span className="text-[11px] font-bold text-black mr-2">:</span>
-                    <span className="text-[11px] text-black font-semibold flex-1">{formData.issueDate || "-"}</span>
-                  </div>
-                  <div className="flex items-start">
-                    <span className="w-24 text-[12px] font-bold text-black">Address</span>
-                    <span className="text-[11px] font-bold text-black mr-2">:</span>
-                    <span className="text-[11px] text-black font-semibold flex-1 leading-tight">{formData.address || "-"}</span>
-                  </div>
-                </div>
+          {/* FRONT FACE */}
+          <div
+            className="relative w-[340px] h-[525px] bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col border border-slate-200 print:shadow-none print:border-gray-300 print:break-inside-avoid shrink-0"
+          >
+            {/* Background Image */}
+            <img src="/card.svg" alt="" className="absolute inset-0 w-full h-full object-cover z-0" />
+            {/* Logo Area */}
+            <div className="relative z-10 w-full flex justify-center">
+              <div className="bg-white rounded-b-[18px] shadow-sm flex items-center justify-center overflow-hidden h-[90px] w-[230px]">
+                <img src="/logo.jpg" alt="Logo" className="w-full h-full object-contain scale-[1.2]" />
               </div>
             </div>
 
-            {/* BACK FACE */}
-            <div
-              className="relative w-[340px] h-[525px] bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col border border-slate-200 print:shadow-none print:border-gray-300 print:break-inside-avoid shrink-0"
-            >
-              <img src="/card.svg" alt="" className="absolute inset-0 w-full h-full object-cover z-0" />
-              <div className="pt-4 px-4 text-center z-10 relative">
-                <p className="text-[11px] text-white font-medium leading-relaxed tracking-wide">
-                  This ID Card is property of Rehmani<br />Technologies and marketing services Pvt Ltd.
-                </p>
+            {/* Profile Image */}
+            <div className="relative z-10 flex justify-center mt-6">
+              <div className="w-32 h-32 rounded-full border-4 border-white shadow-md overflow-hidden bg-slate-100 flex items-center justify-center">
+                {!formData.image ? (
+                  <User className="w-16 h-16 text-slate-300" />
+                ) : (
+                  <img src={formData.image} alt="Profile" className="w-full h-full object-cover" />
+                )}
               </div>
+            </div>
 
-              <div className="flex justify-center mt-3 z-10 relative">
-                <div className="bg-white p-2 border-[6px] border-[#418bbc] shadow-md w-[160px] h-[160px]">
-                  {qrData ? (
-                    <img
-                      src={`https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(qrData)}`}
-                      alt="QR Code"
-                      className="w-full h-full object-contain"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center bg-slate-50 text-slate-400 p-4 text-center border-2 border-dashed border-slate-200">
-                      <span className="text-[12px] leading-tight font-medium">Click "Create Profile" to generate QR</span>
-                    </div>
-                  )}
-                </div>
-              </div>
+            {/* Details Area */}
+            <div className="relative z-10 flex-1 flex flex-col items-center pt-4 px-8 pb-10">
+              <h2 className="text-2xl font-bold text-[#4c9fd6] mb-0.5 text-center leading-tight">{formData.name || "Employee Name"}</h2>
+              <p className="text-sm text-slate-600 font-medium mb-6 uppercase tracking-wider">{formData.jobTitle || "Job Title"}</p>
 
-              <div className="mt-6 px-7 z-10 relative" style={{ marginTop: "40px" }}>
-                <div className="flex items-center mb-1.5">
-                  <span className="w-[70px] text-[12px] font-bold text-black">Residences</span>
-                  <span className="text-[12px] font-bold text-black mr-1">:</span>
-                  <span className="text-[12px] text-black flex-1 leading-tight">{formData.companyAddress || "-"}</span>
+              <div className="w-full space-y-2.5 mt-2">
+                <div className="flex items-start">
+                  <span className="w-24 text-[12px] font-bold text-black">Emp Code</span>
+                  <span className="text-[11px] font-bold text-black mr-2">:</span>
+                  <span className="text-[11px] text-black font-semibold flex-1">{formData.empCode || "-"}</span>
                 </div>
-                <div className="flex items-center mb-1.5">
-                  <span className="w-[70px] text-[12px] font-bold text-black">Phone</span>
-                  <span className="text-[12px] font-bold text-black mr-1">:</span>
-                  <span className="text-[12px] text-black flex-1">{formData.companyPhone || "-"}</span>
+                <div className="flex items-start">
+                  <span className="w-24 text-[12px] font-bold text-black">Department</span>
+                  <span className="text-[11px] font-bold text-black mr-2">:</span>
+                  <span className="text-[11px] text-black font-semibold flex-1">{formData.department || "-"}</span>
                 </div>
-                <div className="flex items-center mb-1.5">
-                  <span className="w-[70px] text-[12px] font-bold text-black">Email</span>
-                  <span className="text-[12px] font-bold text-black mr-1">:</span>
-                  <span className="text-[12px] text-black flex-1">{formData.companyEmail || "-"}</span>
+                <div className="flex items-start">
+                  <span className="w-24 text-[12px] font-bold text-black">Issue Date</span>
+                  <span className="text-[11px] font-bold text-black mr-2">:</span>
+                  <span className="text-[11px] text-black font-semibold flex-1">{formData.issueDate || "-"}</span>
                 </div>
-                <div className="flex items-center mb-1.5">
-                  <span className="w-[70px] text-[12px] font-bold text-black">Web</span>
-                  <span className="text-[12px] font-bold text-black mr-1">:</span>
-                  <span className="text-[12px] text-black flex-1">{formData.companyWeb || "-"}</span>
+                <div className="flex items-start">
+                  <span className="w-24 text-[12px] font-bold text-black">Address</span>
+                  <span className="text-[11px] font-bold text-black mr-2">:</span>
+                  <span className="text-[11px] text-black font-semibold flex-1 leading-tight">{formData.address || "-"}</span>
                 </div>
               </div>
+            </div>
+          </div>
 
-              <div className="mt-4 px-7 z-10 relative">
-                <p className="text-[9px] text-[#418bbc] mb-0.5">If lost/found please report at below :</p>
-                <p className="text-[8.5px] text-[#418bbc] leading-[1.4]">
-                  Rehmani Technologies pvt ltd ,Bypass Road Handwara-193221.<br />
-                  E: helpdesk@ar-techmarketing.in<br />
-                  P: 01955295310
-                </p>
-              </div>
+          {/* BACK FACE */}
+          <div
+            className="relative w-[340px] h-[525px] bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col border border-slate-200 print:shadow-none print:border-gray-300 print:break-inside-avoid shrink-0"
+          >
+            <img src="/card.svg" alt="" className="absolute inset-0 w-full h-full object-cover z-0" />
+            <div className="pt-4 px-4 text-center z-10 relative">
+              <p className="text-[11px] text-white font-medium leading-relaxed tracking-wide">
+                This ID Card is property of Rehmani<br />Technologies and marketing services Pvt Ltd.
+              </p>
+            </div>
 
-              <div className="absolute bottom-4 left-7 z-10 w-[70px] h-[70px]">
-                {formData.signature ? (
-                   <img 
-                    src={formData.signature} 
-                    alt="Sig" 
-                    className="w-full h-full object-contain opacity-90 mix-blend-multiply" 
+            <div className="flex justify-center mt-3 z-10 relative">
+              <div className="bg-white p-2 border-[6px] border-[#418bbc] shadow-md w-[160px] h-[160px]">
+                {qrData ? (
+                  <img
+                    src={`https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(qrData)}`}
+                    alt="QR Code"
+                    className="w-full h-full object-contain"
                   />
                 ) : (
-                  <div className="w-full h-full rounded-full border border-blue-900 flex items-center justify-center relative">
-                    <span className="text-[6px] text-blue-900 text-center font-bold absolute transform -rotate-45 leading-tight">AUTHORIZED<br />SIGNATURE</span>
+                  <div className="w-full h-full flex flex-col items-center justify-center bg-slate-50 text-slate-400 p-4 text-center border-2 border-dashed border-slate-200">
+                    <span className="text-[12px] leading-tight font-medium">Click "Create Profile" to generate QR</span>
                   </div>
                 )}
               </div>
             </div>
+
+            <div className="mt-6 px-7 z-10 relative" style={{ marginTop: "40px" }}>
+              <div className="flex items-center mb-1.5">
+                <span className="w-[70px] text-[12px] font-bold text-black">Residences</span>
+                <span className="text-[12px] font-bold text-black mr-1">:</span>
+                <span className="text-[12px] text-black flex-1 leading-tight">{formData.companyAddress || "-"}</span>
+              </div>
+              <div className="flex items-center mb-1.5">
+                <span className="w-[70px] text-[12px] font-bold text-black">Phone</span>
+                <span className="text-[12px] font-bold text-black mr-1">:</span>
+                <span className="text-[12px] text-black flex-1">{formData.companyPhone || "-"}</span>
+              </div>
+              <div className="flex items-center mb-1.5">
+                <span className="w-[70px] text-[12px] font-bold text-black">Email</span>
+                <span className="text-[12px] font-bold text-black mr-1">:</span>
+                <span className="text-[12px] text-black flex-1">{formData.companyEmail || "-"}</span>
+              </div>
+              <div className="flex items-center mb-1.5">
+                <span className="w-[70px] text-[12px] font-bold text-black">Web</span>
+                <span className="text-[12px] font-bold text-black mr-1">:</span>
+                <span className="text-[12px] text-black flex-1">{formData.companyWeb || "-"}</span>
+              </div>
+            </div>
+
+            <div className="mt-4 px-7 z-10 relative">
+              <p className="text-[9px] text-[#418bbc] mb-0.5">If lost/found please report at below :</p>
+              <p className="text-[8.5px] text-[#418bbc] leading-[1.4]">
+                Rehmani Technologies pvt ltd ,Bypass Road Handwara-193221.<br />
+                E: helpdesk@ar-techmarketing.in<br />
+                P: 01955295310
+              </p>
+            </div>
+
+            <div className="absolute bottom-4 left-7 z-10 w-[70px] h-[70px]">
+              {formData.signature ? (
+                <img
+                  src={formData.signature}
+                  alt="Sig"
+                  className="w-full h-full object-contain opacity-90 mix-blend-multiply"
+                />
+              ) : (
+                <div className="w-full h-full rounded-full border border-blue-900 flex items-center justify-center relative">
+                  <span className="text-[6px] text-blue-900 text-center font-bold absolute transform -rotate-45 leading-tight">AUTHORIZED<br />SIGNATURE</span>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </div>
