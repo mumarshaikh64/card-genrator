@@ -24,8 +24,8 @@ export default function LoginPage() {
     setLoading(true);
     setError('');
 
-    // Hardcoded credentials as requested
-    if (email === 'admin123@gmial.com' && password === 'admin123') {
+    const cleanEmail = email.trim().toLowerCase();
+    if ((cleanEmail === 'admin123@gmail.com' || cleanEmail === 'admin123@gmial.com') && password === 'admin123') {
       localStorage.setItem('isAdmin', 'true');
       router.push('/');
     } else {
@@ -63,7 +63,7 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full bg-slate-50 border border-slate-200 rounded-2xl py-3.5 pl-12 pr-4 text-sm focus:bg-white focus:border-blue-600 outline-none transition-all"
-                  placeholder="admin123@gmial.com"
+                  placeholder="admin123@gmail.com"
                 />
               </div>
             </div>

@@ -2,7 +2,7 @@
 
 import { getAllEmployees, deleteEmployee, Employee } from "@/app/actions";
 import Link from "next/link";
-import { ArrowLeft, UserX, Eye, Pencil, Trash2, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import { ArrowLeft, UserX, Eye, Pencil, Trash2, ChevronLeft, ChevronRight, Loader2, MoreVertical, QrCode, CreditCard } from "lucide-react";
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 
@@ -14,6 +14,17 @@ function EmployeesList() {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (!(e.target as HTMLElement)?.closest('.more-dropdown-container')) {
+        setOpenDropdownId(null);
+      }
+    };
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, []);
   
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -99,8 +110,8 @@ function EmployeesList() {
         </div>
       ) : (
         <div className="space-y-6">
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-            <div className="overflow-x-auto">
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-200">
+            <div className="overflow-visible">
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="bg-slate-50/50 border-b border-slate-200 text-slate-500 text-[11px] uppercase tracking-wider font-bold">
@@ -111,7 +122,7 @@ function EmployeesList() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {paginatedEmployees.map((emp) => (
+                  {paginatedEmployees.map((emp, index) => (
                     <tr key={emp.id} className="hover:bg-slate-50/50 transition-colors group">
                       <td className="p-5">
                         <div className="flex items-center gap-3">
@@ -144,7 +155,7 @@ function EmployeesList() {
                         <p className="text-[10px] text-slate-400 uppercase font-bold tracking-tighter">Verified</p>
                       </td>
                       <td className="p-5 text-right">
-                        <div className="flex items-center justify-end gap-2">
+                        <div className="flex items-center justify-end gap-1 sm:gap-2">
                           <Link 
                             href={`/employee/${emp.id}`}
                             className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
@@ -167,6 +178,42 @@ function EmployeesList() {
                           >
                             {deletingId === emp.id ? <Loader2 className="w-5 h-5 animate-spin" /> : <Trash2 className="w-5 h-5" />}
                           </button>
+                          
+                          {/* More Dropdown Button */}
+                          <div className="relative inline-block text-left more-dropdown-container">
+                            <button
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                setOpenDropdownId(openDropdownId === emp.id ? null : emp.id);
+                              }}
+                              className={`p-2 rounded-lg transition-all ${openDropdownId === emp.id ? 'bg-blue-50 text-blue-600' : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'}`}
+                              title="More Options"
+                            >
+                              <MoreVertical className="w-5 h-5 pointer-events-none" />
+                            </button>
+                            
+                            {openDropdownId === emp.id && (
+                              <div className={`absolute right-0 ${index >= paginatedEmployees.length - 2 && paginatedEmployees.length > 2 ? 'bottom-full mb-1' : 'top-full mt-1'} w-44 bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 text-left overflow-hidden animate-in fade-in-50 zoom-in-95 duration-100`}>
+                                <Link
+                                  href={`/print/qr/${emp.id}`}
+                                  onClick={() => setOpenDropdownId(null)}
+                                  className="flex items-center gap-2.5 px-3.5 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:text-blue-600 transition-colors"
+                                >
+                                  <QrCode className="w-4 h-4 text-blue-600 shrink-0" />
+                                  Print QR Code
+                                </Link>
+                                <Link
+                                  href={`/print/card/${emp.id}`}
+                                  onClick={() => setOpenDropdownId(null)}
+                                  className="flex items-center gap-2.5 px-3.5 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:text-green-600 transition-colors"
+                                >
+                                  <CreditCard className="w-4 h-4 text-green-600 shrink-0" />
+                                  Print Card
+                                </Link>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </td>
                     </tr>
