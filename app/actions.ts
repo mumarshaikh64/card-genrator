@@ -113,14 +113,14 @@ export async function getEmployeeById(id: string | number) {
       const employee = await client.sql<Employee>`SELECT * FROM employees WHERE id = ${id}`;
       
       if (employee.rows.length === 0) {
-        return { success: false, error: "Employee not found." };
+        return { success: false, data: undefined, error: "Employee not found." };
       }
       
       return { success: true, data: employee.rows[0] };
     });
   } catch (error: any) {
     console.error("Fetch Error:", error);
-    return { success: false, error: error.message || "Failed to fetch employee details." };
+    return { success: false, data: undefined, error: error.message || "Failed to fetch employee details." };
   }
 }
 
