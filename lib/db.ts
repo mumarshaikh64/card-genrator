@@ -7,7 +7,7 @@ export async function initDb() {
   await client.connect();
   try {
     // Initialize table if it doesn't exist
-    await client.sql`
+    await client.query(`
       CREATE TABLE IF NOT EXISTS employees (
         id SERIAL PRIMARY KEY,
         name TEXT,
@@ -25,7 +25,7 @@ export async function initDb() {
         signature TEXT,
         createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
-    `;
+    `);
     console.log("Database initialized successfully");
   } catch (error) {
     console.error("Database initialization error:", error);

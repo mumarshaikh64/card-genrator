@@ -37,7 +37,7 @@ async function executeQuery<T>(callback: (client: any) => Promise<T>): Promise<T
 // Function to initialize the table if it doesn't exist
 async function ensureTableExists(client: any) {
   try {
-    await client.sql`
+    await client.query(`
       CREATE TABLE IF NOT EXISTS employees (
         id SERIAL PRIMARY KEY,
         name TEXT,
@@ -55,7 +55,7 @@ async function ensureTableExists(client: any) {
         signature TEXT,
         createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
-    `;
+    `);
   } catch (error) {
     console.error("Error creating table:", error);
   }
@@ -67,11 +67,11 @@ export async function saveEmployeeData(formData: any) {
       await ensureTableExists(client);
       const { name, jobTitle, empCode, department, phone, issueDate, address, image, companyAddress, companyPhone, companyEmail, companyWeb, signature } = formData;
 
-      const result = await client.sql`
+      const result = await client.query(`
         INSERT INTO employees (name, jobTitle, empCode, department, phone, issueDate, address, image, companyAddress, companyPhone, companyEmail, companyWeb, signature)
-        VALUES (${name}, ${jobTitle}, ${empCode}, ${department}, ${phone}, ${issueDate}, ${address}, ${image}, ${companyAddress}, ${companyPhone}, ${companyEmail}, ${companyWeb}, ${signature})
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
         RETURNING id
-      `;
+      `, [name, jobTitle, empCode, department, phone, issueDate, address, image, companyAddress, companyPhone, companyEmail, companyWeb, signature]);
 
       return { success: true, id: result.rows[0].id };
     });
@@ -89,16 +89,16 @@ export async function getAllEmployees(searchQuery?: string) {
       
       if (searchQuery) {
         const likeQuery = `%${searchQuery}%`;
-        employees = await client.sql<Employee>`
+        employees = await client.query(`
           SELECT * FROM employees 
-          WHERE name ILIKE ${likeQuery} OR empCode ILIKE ${likeQuery} OR department ILIKE ${likeQuery} 
+          WHERE name ILIKE $1 OR empCode ILIKE $1 OR department ILIKE $1 
           ORDER BY createdAt DESC
-        `;
+        `, [likeQuery]);
       } else {
-        employees = await client.sql<Employee>`SELECT * FROM employees ORDER BY createdAt DESC`;
+        employees = await client.query(`SELECT * FROM employees ORDER BY createdAt DESC`);
       }
 
-      return { success: true, data: employees.rows };
+      return { success: true, data: employees.rows as Employee[] };
     });
   } catch (error: any) {
     console.error("Fetch Error:", error);
@@ -110,13 +110,13 @@ export async function getEmployeeById(id: string | number) {
   try {
     return await executeQuery(async (client) => {
       await ensureTableExists(client);
-      const employee = await client.sql<Employee>`SELECT * FROM employees WHERE id = ${id}`;
+      const employee = await client.query(`SELECT * FROM employees WHERE id = $1`, [id]);
       
       if (employee.rows.length === 0) {
         return { success: false, data: undefined, error: "Employee not found." };
       }
       
-      return { success: true, data: employee.rows[0] };
+      return { success: true, data: employee.rows[0] as Employee };
     });
   } catch (error: any) {
     console.error("Fetch Error:", error);
@@ -128,7 +128,7 @@ export async function deleteEmployee(id: number) {
   try {
     return await executeQuery(async (client) => {
       await ensureTableExists(client);
-      await client.sql`DELETE FROM employees WHERE id = ${id}`;
+      await client.query(`DELETE FROM employees WHERE id = $1`, [id]);
       return { success: true };
     });
   } catch (error: any) {
@@ -143,13 +143,13 @@ export async function updateEmployee(id: number, formData: any) {
       await ensureTableExists(client);
       const { name, jobTitle, empCode, department, phone, issueDate, address, image, companyAddress, companyPhone, companyEmail, companyWeb, signature } = formData;
       
-      await client.sql`
+      await client.query(`
         UPDATE employees SET 
-          name = ${name}, jobTitle = ${jobTitle}, empCode = ${empCode}, department = ${department}, phone = ${phone}, 
-          issueDate = ${issueDate}, address = ${address}, image = ${image}, companyAddress = ${companyAddress}, 
-          companyPhone = ${companyPhone}, companyEmail = ${companyEmail}, companyWeb = ${companyWeb}, signature = ${signature}
-        WHERE id = ${id}
-      `;
+          name = $1, jobTitle = $2, empCode = $3, department = $4, phone = $5, 
+          issueDate = $6, address = $7, image = $8, companyAddress = $9, 
+          companyPhone = $10, companyEmail = $11, companyWeb = $12, signature = $13
+        WHERE id = $14
+      `, [name, jobTitle, empCode, department, phone, issueDate, address, image, companyAddress, companyPhone, companyEmail, companyWeb, signature, id]);
       
       return { success: true };
     });
