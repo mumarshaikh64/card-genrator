@@ -1,8 +1,11 @@
-import { createClient } from '@vercel/postgres';
+import { Client } from 'pg';
 
 export async function initDb() {
-  const client = createClient({
+  const client = new Client({
     connectionString: process.env.PRISMA_DATABASE_URL || process.env.POSTGRES_URL || process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false,
+    },
   });
   await client.connect();
   try {
@@ -37,10 +40,13 @@ export async function initDb() {
 
 // Helper to ensure db is ready
 export async function getDb() {
-  // Using createClient() to support direct connection strings without pooling restrictions.
+  // Using standard pg Client to support direct connection strings over raw TCP without proxy routing.
   // Note: Callers should call await client.end() after finishing their queries.
-  const client = createClient({
+  const client = new Client({
     connectionString: process.env.PRISMA_DATABASE_URL || process.env.POSTGRES_URL || process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false,
+    },
   });
   await client.connect();
   return client;

@@ -1,6 +1,6 @@
 'use server';
 
-import { createClient } from '@vercel/postgres';
+import { Client } from 'pg';
 import os from 'os';
 
 export interface Employee {
@@ -21,10 +21,13 @@ export interface Employee {
   createdAt: string;
 }
 
-// Helper function to execute queries using a direct client connection
-async function executeQuery<T>(callback: (client: any) => Promise<T>): Promise<T> {
-  const client = createClient({
+// Helper function to execute queries using a pure direct TCP client connection
+async function executeQuery<T>(callback: (client: Client) => Promise<T>): Promise<T> {
+  const client = new Client({
     connectionString: process.env.PRISMA_DATABASE_URL || process.env.POSTGRES_URL || process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false,
+    },
   });
   await client.connect();
   try {
@@ -35,7 +38,7 @@ async function executeQuery<T>(callback: (client: any) => Promise<T>): Promise<T
 }
 
 // Function to initialize the table if it doesn't exist
-async function ensureTableExists(client: any) {
+async function ensureTableExists(client: Client) {
   try {
     await client.query(`
       CREATE TABLE IF NOT EXISTS employees (
