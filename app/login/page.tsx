@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Lock, Mail, Loader2, ShieldCheck } from 'lucide-react';
+import { login } from '@/app/actions';
+
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -19,17 +21,23 @@ export default function LoginPage() {
     }
   }, [router]);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
-    const cleanEmail = email.trim().toLowerCase();
-    if ((cleanEmail === 'admin123@gmail.com' || cleanEmail === 'admin123@gmial.com') && password === 'admin123') {
+    const formData = new FormData();
+    formData.append('email', email);
+    formData.append('password', password);
+
+    const result = await login(formData);
+
+
+    if (result.success) {
       localStorage.setItem('isAdmin', 'true');
       router.push('/');
     } else {
-      setError('Invalid email or password');
+      setError(result.error || 'Invalid email or password');
       setLoading(false);
     }
   };
@@ -63,7 +71,7 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full bg-slate-50 border border-slate-200 rounded-2xl py-3.5 pl-12 pr-4 text-sm focus:bg-white focus:border-blue-600 outline-none transition-all"
-                  placeholder="admin123@gmail.com"
+                  placeholder="ishfaqnazir@gmail.com"
                 />
               </div>
             </div>

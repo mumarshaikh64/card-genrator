@@ -33,7 +33,7 @@ function GeneratorForm() {
 
 
 
-// data set kara hai 
+  // data set kara hai 
 
   const [currentDate, setCurrentDate] = useState("");
 
@@ -247,6 +247,19 @@ function GeneratorForm() {
                         value={formData.issueDate}
                         onChange={handleInputChange}
                         className={`pl-9 w-full rounded-xl border bg-white py-2 text-sm outline-none transition-all shadow-sm ${isInvalid('issueDate') ? 'border-red-300 focus:border-red-500' : 'border-slate-200 focus:border-blue-500'}`}
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className={`block text-[11px] font-bold uppercase tracking-wider ${isInvalid('phone') ? 'text-red-500' : 'text-slate-500'}`}>Phone</label>
+                    <div className="relative group">
+                      <input
+                        type="text"
+                        name="phone"
+                        value={formData.phone}
+                        placeholder="Enter Phone Number"
+                        onChange={handleInputChange}
+                        className={`pl-2 w-full rounded-xl border bg-white py-2 text-sm outline-none transition-all shadow-sm ${isInvalid('phone') ? 'border-red-300 focus:border-red-500' : 'border-slate-200 focus:border-blue-500'}`}
                       />
                     </div>
                   </div>
@@ -482,25 +495,25 @@ function GeneratorForm() {
               <p className="text-sm text-slate-600 font-medium mb-6 uppercase tracking-wider">{formData.jobTitle || "Job Title"}</p>
 
               <div className="w-full space-y-2.5 mt-2">
-                <div className="flex items-start">
+                <div className="flex items-baseline">
                   <span className="w-24 text-[12px] font-bold text-black">Emp Code</span>
-                  <span className="text-[11px] font-bold text-black mr-2">:</span>
-                  <span className="text-[11px] text-black font-semibold flex-1">{formData.empCode || "-"}</span>
+                  <span className="text-[12px] font-bold text-black mr-2">:</span>
+                  <span className="text-[12px] text-black font-semibold flex-1 leading-tight">{formData.empCode || "-"}</span>
                 </div>
-                <div className="flex items-start">
+                <div className="flex items-baseline">
                   <span className="w-24 text-[12px] font-bold text-black">Department</span>
-                  <span className="text-[11px] font-bold text-black mr-2">:</span>
-                  <span className="text-[11px] text-black font-semibold flex-1">{formData.department || "-"}</span>
+                  <span className="text-[12px] font-bold text-black mr-2">:</span>
+                  <span className="text-[12px] text-black font-semibold flex-1 leading-tight">{formData.department || "-"}</span>
                 </div>
-                <div className="flex items-start">
+                <div className="flex items-baseline">
                   <span className="w-24 text-[12px] font-bold text-black">Issue Date</span>
-                  <span className="text-[11px] font-bold text-black mr-2">:</span>
-                  <span className="text-[11px] text-black font-semibold flex-1">{formData.issueDate || "-"}</span>
+                  <span className="text-[12px] font-bold text-black mr-2">:</span>
+                  <span className="text-[12px] text-black font-semibold flex-1 leading-tight">{formData.issueDate || "-"}</span>
                 </div>
-                <div className="flex items-start">
+                <div className="flex items-baseline">
                   <span className="w-24 text-[12px] font-bold text-black">Address</span>
-                  <span className="text-[11px] font-bold text-black mr-2">:</span>
-                  <span className="text-[11px] text-black font-semibold flex-1 leading-tight">{formData.address || "-"}</span>
+                  <span className="text-[12px] font-bold text-black mr-2">:</span>
+                  <span className="text-[12px] text-black font-semibold flex-1 leading-tight">{formData.address || "-"}</span>
                 </div>
               </div>
             </div>

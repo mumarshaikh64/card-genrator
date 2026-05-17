@@ -69,25 +69,25 @@ export default async function EmployeeProfile({ params }: { params: Promise<{ id
               <p className="text-sm text-slate-600 font-medium mb-6 uppercase tracking-wider">{emp.jobTitle}</p>
 
               <div className="w-full space-y-2.5 mt-2">
-                <div className="flex items-start">
+                <div className="flex items-baseline">
                   <span className="w-24 text-[12px] font-bold text-black">Emp Code</span>
-                  <span className="text-[11px] font-bold text-black mr-2">:</span>
-                  <span className="text-[11px] text-black font-semibold flex-1">{emp.empCode}</span>
+                  <span className="text-[12px] font-bold text-black mr-2">:</span>
+                  <span className="text-[12px] text-black font-semibold flex-1 leading-tight">{emp.empCode}</span>
                 </div>
-                <div className="flex items-start">
+                <div className="flex items-baseline">
                   <span className="w-24 text-[12px] font-bold text-black">Department</span>
-                  <span className="text-[11px] font-bold text-black mr-2">:</span>
-                  <span className="text-[11px] text-black font-semibold flex-1">{emp.department}</span>
+                  <span className="text-[12px] font-bold text-black mr-2">:</span>
+                  <span className="text-[12px] text-black font-semibold flex-1 leading-tight">{emp.department}</span>
                 </div>
-                <div className="flex items-start">
+                <div className="flex items-baseline">
                   <span className="w-24 text-[12px] font-bold text-black">Issue Date</span>
-                  <span className="text-[11px] font-bold text-black mr-2">:</span>
-                  <span className="text-[11px] text-black font-semibold flex-1">{emp.issueDate}</span>
+                  <span className="text-[12px] font-bold text-black mr-2">:</span>
+                  <span className="text-[12px] text-black font-semibold flex-1 leading-tight">{emp.issueDate}</span>
                 </div>
-                <div className="flex items-start">
+                <div className="flex items-baseline">
                   <span className="w-24 text-[12px] font-bold text-black">Address</span>
-                  <span className="text-[11px] font-bold text-black mr-2">:</span>
-                  <span className="text-[11px] text-black font-semibold flex-1 leading-tight">{emp.address}</span>
+                  <span className="text-[12px] font-bold text-black mr-2">:</span>
+                  <span className="text-[12px] text-black font-semibold flex-1 leading-tight">{emp.address}</span>
                 </div>
               </div>
             </div>

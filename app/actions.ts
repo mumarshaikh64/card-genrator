@@ -2,6 +2,42 @@
 
 import { Client } from 'pg';
 import os from 'os';
+import { cookies } from 'next/headers';
+
+const ADMIN_EMAIL = 'ishfaqnazir@gmail.com';
+const ADMIN_PASSWORD = 'Ishfaqnazir123';
+
+const SESSION_COOKIE = 'admin_session';
+
+async function isAdmin() {
+  const cookieStore = await cookies();
+  const session = cookieStore.get(SESSION_COOKIE);
+  return session?.value === 'true';
+}
+
+export async function login(formData: FormData) {
+  const email = formData.get('email') as string;
+  const password = formData.get('password') as string;
+
+  if (email.trim().toLowerCase() === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+    const cookieStore = await cookies();
+    cookieStore.set(SESSION_COOKIE, 'true', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 60 * 60 * 24, // 1 day
+    });
+    return { success: true };
+  }
+  return { success: false, error: 'Invalid credentials' };
+}
+
+export async function logout() {
+  const cookieStore = await cookies();
+  cookieStore.delete(SESSION_COOKIE);
+  return { success: true };
+}
+
 
 export interface Employee {
   id: number;
@@ -82,6 +118,14 @@ async function ensureTableExists(client: Client) {
 }
 
 export async function saveEmployeeData(formData: any) {
+  if (!await isAdmin()) {
+    return { success: false, error: "Unauthorized" };
+  }
+
+  // Basic Validation
+  if (!formData.name || typeof formData.name !== 'string') return { success: false, error: "Invalid name" };
+  if (!formData.empCode || typeof formData.empCode !== 'string') return { success: false, error: "Invalid Employee Code" };
+
   try {
     return await executeQuery(async (client) => {
       await ensureTableExists(client);
@@ -91,13 +135,27 @@ export async function saveEmployeeData(formData: any) {
         INSERT INTO employees (name, jobTitle, empCode, department, phone, issueDate, address, image, companyAddress, companyPhone, companyEmail, companyWeb, signature)
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
         RETURNING id
-      `, [name, jobTitle, empCode, department, phone, issueDate, address, image, companyAddress, companyPhone, companyEmail, companyWeb, signature]);
+      `, [
+        String(name).slice(0, 255), 
+        String(jobTitle).slice(0, 255), 
+        String(empCode).slice(0, 100), 
+        String(department).slice(0, 255), 
+        String(phone).slice(0, 50), 
+        String(issueDate).slice(0, 50), 
+        String(address).slice(0, 1000), 
+        image, // Image might be a large base64 string
+        String(companyAddress).slice(0, 1000), 
+        String(companyPhone).slice(0, 50), 
+        String(companyEmail).slice(0, 255), 
+        String(companyWeb).slice(0, 255), 
+        signature
+      ]);
 
       return { success: true, id: result.rows[0].id, error: undefined };
     });
   } catch (error: any) {
     console.error("Database Error:", error);
-    return { success: false, id: undefined, error: error.message || "Failed to save data to the database." };
+    return { success: false, id: undefined, error: "Failed to save data. Please try again." };
   }
 }
 
@@ -143,7 +201,7 @@ export async function getAllEmployees(searchQuery?: string) {
     });
   } catch (error: any) {
     console.error("Fetch Error:", error);
-    return { success: false, data: [] as Employee[], error: error.message || "Failed to fetch employees." };
+    return { success: false, data: [] as Employee[], error: "Failed to fetch data." };
   }
 }
 
@@ -161,11 +219,14 @@ export async function getEmployeeById(id: string | number) {
     });
   } catch (error: any) {
     console.error("Fetch Error:", error);
-    return { success: false, data: undefined, error: error.message || "Failed to fetch employee details." };
+    return { success: false, data: undefined, error: "Failed to fetch details." };
   }
 }
 
 export async function deleteEmployee(id: number) {
+  if (!await isAdmin()) {
+    return { success: false, error: "Unauthorized" };
+  }
   try {
     return await executeQuery(async (client) => {
       await ensureTableExists(client);
@@ -179,6 +240,14 @@ export async function deleteEmployee(id: number) {
 }
 
 export async function updateEmployee(id: number, formData: any) {
+  if (!await isAdmin()) {
+    return { success: false, error: "Unauthorized" };
+  }
+
+  // Basic Validation
+  if (!formData.name || typeof formData.name !== 'string') return { success: false, error: "Invalid name" };
+  if (!formData.empCode || typeof formData.empCode !== 'string') return { success: false, error: "Invalid Employee Code" };
+
   try {
     return await executeQuery(async (client) => {
       await ensureTableExists(client);
@@ -190,13 +259,28 @@ export async function updateEmployee(id: number, formData: any) {
           issueDate = $6, address = $7, image = $8, companyAddress = $9, 
           companyPhone = $10, companyEmail = $11, companyWeb = $12, signature = $13
         WHERE id = $14
-      `, [name, jobTitle, empCode, department, phone, issueDate, address, image, companyAddress, companyPhone, companyEmail, companyWeb, signature, id]);
+      `, [
+        String(name).slice(0, 255), 
+        String(jobTitle).slice(0, 255), 
+        String(empCode).slice(0, 100), 
+        String(department).slice(0, 255), 
+        String(phone).slice(0, 50), 
+        String(issueDate).slice(0, 50), 
+        String(address).slice(0, 1000), 
+        image, 
+        String(companyAddress).slice(0, 1000), 
+        String(companyPhone).slice(0, 50), 
+        String(companyEmail).slice(0, 255), 
+        String(companyWeb).slice(0, 255), 
+        signature,
+        id
+      ]);
       
       return { success: true, error: undefined };
     });
   } catch (error: any) {
     console.error("Update Error:", error);
-    return { success: false, error: error.message || "Failed to update employee." };
+    return { success: false, error: "Failed to update employee details." };
   }
 }
 
